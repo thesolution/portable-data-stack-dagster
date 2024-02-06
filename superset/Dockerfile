@@ -1,4 +1,4 @@
-FROM apache/superset:2.0.1 
+FROM apache/superset:3.1.0 
 
 ARG SUPERSET_ADMIN
 ARG SUPERSET_PASSWORD
@@ -7,10 +7,12 @@ ARG POSTGRES_PASSWORD
 # Switching to root to install the required packages
 USER root
 COPY --chown=superset:superset ./superset/assets .
-RUN pip install psycopg2-binary==2.9.1
-RUN pip install duckdb-engine==0.9.2
-RUN pip install duckdb==0.8.1
+RUN pip install psycopg2-binary==2.9.9
+RUN pip install duckdb-engine==0.11.0
+RUN pip install duckdb==0.9.2
 USER superset
+ENV SUPERSET_ENV="development"
+ENV FLASK_DEBUG=true
 RUN superset fab create-admin \
               --username ${SUPERSET_ADMIN} \
               --firstname Superset \
